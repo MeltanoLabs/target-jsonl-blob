@@ -32,6 +32,6 @@ jobs:
         goos: ${{ matrix.goos }}
         goarch: ${{ matrix.goarch }}
         goversion: "1.17"
-        project_path: ./golang/
-        binary_name: tap-data-jobs
-        extra_files: ./golang/README.md
+        project_path: ./
+        binary_name: target-jsonl-blob
+        extra_files: ./README.md

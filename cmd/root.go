@@ -18,6 +18,7 @@ package cmd
 import (
 	"context"
 	"fmt"
+	"io"
 	"log"
 	"os"
 
@@ -31,8 +32,11 @@ import (
 	_ "gocloud.dev/blob/s3blob"
 )
 
-var configFile string
-var C target.Config
+var (
+	configFile string
+	inputFile  string
+	C          target.Config
+)
 
 var rootCmd = &cobra.Command{
 	Use:   "target-jsonl-blob",
@@ -47,8 +51,6 @@ func Execute() {
 	if err != nil {
 		os.Exit(1)
 	}
-
-	writers := make(map[string]*blob.Writer)
 
 	readConfig(configFile)
 
@@ -67,18 +69,34 @@ func Execute() {
 	}
 	defer bucket.Close()
 
-	target.ProcessLines(C, ctx, bucket, writers)
+	var lines io.Reader
 
-	for _, writer := range writers {
-		closeErr := writer.Close()
-		if closeErr != nil {
-			log.Fatal(closeErr)
+	if inputFile == "" {
+		lines = os.Stdin
+	} else {
+		lines, err = os.Open(inputFile)
+		if err != nil {
+			fmt.Print(err)
 		}
 	}
+
+	target.ProcessLines(lines, C, ctx, bucket)
+
+	if inputFile == "" {
+		target.ProcessLines(os.Stdin, C, ctx, bucket)
+	} else {
+		inputLines, err := os.Open(inputFile)
+		if err != nil {
+			fmt.Print(err)
+		}
+		target.ProcessLines(inputLines, C, ctx, bucket)
+	}
+
 }
 
 func init() {
 	rootCmd.PersistentFlags().StringVarP(&configFile, "config", "c", "", "Config file")
+	rootCmd.PersistentFlags().StringVarP(&inputFile, "input", "i", "", "Input file")
 	rootCmd.MarkPersistentFlagRequired("config")
 }
 

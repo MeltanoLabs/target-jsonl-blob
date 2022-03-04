@@ -20,8 +20,8 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"io"
 	"log"
-	"os"
 	"time"
 
 	"gocloud.dev/blob"
@@ -107,15 +107,23 @@ func processLine(
 }
 
 func ProcessLines(
+	r io.Reader,
 	config Config,
 	ctx context.Context,
 	bucket *blob.Bucket,
-	writers map[string]*blob.Writer,
 ) {
-	scanner := bufio.NewScanner(os.Stdin)
+	scanner := bufio.NewScanner(r)
 	streams := make(map[string]StreamInfo)
+	writers := make(map[string]*blob.Writer)
 
 	for scanner.Scan() {
 		processLine(scanner.Bytes(), ctx, config, bucket, streams, writers)
+	}
+
+	for _, writer := range writers {
+		closeErr := writer.Close()
+		if closeErr != nil {
+			log.Fatal(closeErr)
+		}
 	}
 }

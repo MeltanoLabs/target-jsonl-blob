@@ -18,7 +18,6 @@ package target
 import (
 	"bytes"
 	"text/template"
-	"time"
 )
 
 type Config struct {
@@ -27,8 +26,14 @@ type Config struct {
 }
 
 type StreamInfo struct {
-	StreamName    string
-	SyncStartTime time.Time
+	StreamName       string
+	Date             string
+	TimestampSeconds int64
+	Minute           int
+	Hour             int
+	Day              int
+	Month            int
+	Year             int
 }
 
 const DEFAULT_KEY_TEMPLATE = "{{.StreamName}}.jsonl"

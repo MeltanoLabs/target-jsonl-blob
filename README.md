@@ -20,16 +20,15 @@ JSONL Singer target for local storage, S3 and Azure Blob Storage.
 ### Available fields for `key_template`
 
 - `StreamName`
-
-#### Planned
-
 - `Date` (YYYY-MM-DD)
 - `TimestampSeconds`
+- `Minute`
+- `Hour`
 - `Day`
 - `Month`
 - `Year`
-- `Hour`
-- `Minute`
+
+Example: `{{.StreamName}}/{{.Year}}/{{.Month}}/{{.Day}}/{{.Hour}}/{{.Minute}}/{{.StreamName}}.jsonl`
 
 ## Build from source
 

@@ -34,19 +34,10 @@ import (
 var configFile string
 var C target.Config
 
-// rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "target-jsonl-blob",
 	Short: "JSONLines Singer target for blob storages",
-	Long: `A longer description that spans multiple lines and likely contains
-examples and usage of using your application. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
-	// Uncomment the following line if your bare application
-	// has an action associated with it:
-	Run: func(cmd *cobra.Command, args []string) {},
+	Run:   func(cmd *cobra.Command, args []string) {},
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
@@ -59,11 +50,7 @@ func Execute() {
 
 	writers := make(map[string]*blob.Writer)
 
-	initConfig(configFile)
-	err = viper.Unmarshal(&C)
-	if err != nil {
-		log.Fatalf("Unable to decode into struct, %v", err)
-	}
+	readConfig(configFile)
 
 	if C.Bucket == "" {
 		log.Fatalf("Bucket is required")
@@ -93,26 +80,20 @@ func Execute() {
 func init() {
 	rootCmd.PersistentFlags().StringVarP(&configFile, "config", "c", "", "Config file")
 	rootCmd.MarkPersistentFlagRequired("config")
-
-	// Cobra also supports local flags, which will only run
-	// when this action is called directly.
-	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
 
 // initConfig reads in config file and ENV variables if set.
-func initConfig(file string) {
-	// viper.SetConfigType("json")
+func readConfig(file string) {
 	viper.SetConfigFile(file)
 
-	// viper.SetDefault("bucket", "")
-	// viper.SetEnvPrefix("TARGET_JSONL_BLOB_")
-	// viper.AutomaticEnv() // read in environment variables that match
-
-	// If a config file is found, read it in.
 	if err := viper.ReadInConfig(); err == nil {
 		log.Printf("Using config file %s", viper.ConfigFileUsed())
 	} else {
 		fmt.Fprintln(os.Stderr, "Config file is not valid")
 		os.Exit(1)
+	}
+
+	if err := viper.Unmarshal(&C); err != nil {
+		log.Fatalf("Unable to decode into struct, %v", err)
 	}
 }

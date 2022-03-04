@@ -1,2 +1,2 @@
-bucket: file://./output/
+bucket: file://./output/my-bucket
 key_template: "{{.StreamName}}.jsonl"

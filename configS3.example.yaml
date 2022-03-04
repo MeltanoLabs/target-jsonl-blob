@@ -1,0 +1,2 @@
+bucket: s3://my-bucket?endpoint=http://127.0.0.1:9000&disableSSL=true&s3ForcePathStyle=true
+key_template: "{{.StreamName}}.jsonl"

@@ -1,7 +1,7 @@
 # Config files
 *.json
 *.yaml
-!config.example.yaml
+!*.example.*
 
 # Data files
 **/*.jsonl

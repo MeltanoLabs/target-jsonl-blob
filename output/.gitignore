@@ -4,3 +4,6 @@
 
 *
 !.gitignore
+
+!my-bucket/
+my-bucket/**

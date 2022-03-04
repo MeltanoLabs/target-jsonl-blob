@@ -1,4 +1,13 @@
+# Config files
+*.json
+*.yaml
+!config.example.yaml
+
+# Data files
+**/*.jsonl
+
 # Binaries for programs and plugins
+target-jsonl-blob
 *.exe
 *.exe~
 *.dll

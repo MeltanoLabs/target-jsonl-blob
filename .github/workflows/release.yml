@@ -1,0 +1,37 @@
+on:
+  release:
+    types: [created]
+jobs:
+  releases-matrix:
+    name: Release Go Binaries
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+        - goos: linux
+          goarch: "386"
+        - goos: linux
+          goarch: "amd64"
+        - goos: linux
+          goarch: "arm64"
+        - goos: darwin
+          goarch: "amd64"
+        - goos: darwin
+          goarch: "arm64"
+        - goos: windows
+          goarch: "386"
+        - goos: windows
+          goarch: "amd64"
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Release binaries
+      uses: wangyoucao577/go-release-action@v1.25
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        goos: ${{ matrix.goos }}
+        goarch: ${{ matrix.goarch }}
+        goversion: "1.17"
+        project_path: ./
+        binary_name: target-jsonl-blob
+        extra_files: ./README.md

@@ -84,12 +84,12 @@ func processLine(
 	streams map[string]StreamInfo,
 	writers map[string]*blob.Writer,
 ) {
-	var message map[string]interface{}
+	var message singerMessage
 	if err := json.Unmarshal(line, &message); err != nil {
 		panic(err)
 	}
 
-	switch message["type"] {
+	switch message.Type {
 	case "RECORD":
 		var recordMessage singerRecord
 		if err := json.Unmarshal(line, &recordMessage); err != nil {
@@ -119,7 +119,7 @@ func processLine(
 		}
 		fmt.Println(string(stateMessage.Value))
 	default:
-		log.Printf("Unknown message type %s", message["type"])
+		log.Printf("Unknown message type %s", message.Type)
 	}
 }
 

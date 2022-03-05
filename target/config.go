@@ -17,7 +17,11 @@ package target
 
 import (
 	"bytes"
+	"errors"
+	"log"
 	"text/template"
+
+	"github.com/spf13/viper"
 )
 
 type Config struct {
@@ -37,6 +41,30 @@ type StreamInfo struct {
 }
 
 const DEFAULT_KEY_TEMPLATE = "{{.StreamName}}.jsonl"
+
+func ReadConfig(file string, c *Config) error {
+	viper.SetConfigFile(file)
+
+	if err := viper.ReadInConfig(); err == nil {
+		log.Printf("Using config file %s", viper.ConfigFileUsed())
+	} else {
+		return err
+	}
+
+	if err := viper.Unmarshal(&c); err != nil {
+		return err
+	}
+
+	if c.Bucket == "" {
+		return errors.New("bucket is required")
+	}
+
+	if c.KeyTemplate == "" {
+		c.KeyTemplate = DEFAULT_KEY_TEMPLATE
+	}
+
+	return nil
+}
 
 func FillKeyTemplate(templateString string, info StreamInfo) (string, error) {
 	keyTemplate := template.Must(template.New("streamKey").Parse(templateString))

@@ -27,6 +27,10 @@ import (
 	"gocloud.dev/blob"
 )
 
+type Target struct {
+	Config Config
+}
+
 func handleNewStream(
 	streamName string,
 	ctx context.Context,
@@ -106,18 +110,20 @@ func processLine(
 	}
 }
 
-func ProcessLines(
-	r io.Reader,
-	config Config,
-	ctx context.Context,
-	bucket *blob.Bucket,
-) {
+func (t Target) ProcessLines(r io.Reader) {
 	scanner := bufio.NewScanner(r)
 	streams := make(map[string]StreamInfo)
 	writers := make(map[string]*blob.Writer)
 
+	ctx := context.Background()
+	bucket, err := blob.OpenBucket(ctx, t.Config.Bucket)
+	if err != nil {
+		log.Fatalf("Unable to open bucket, %v", err)
+	}
+	defer bucket.Close()
+
 	for scanner.Scan() {
-		processLine(scanner.Bytes(), ctx, config, bucket, streams, writers)
+		processLine(scanner.Bytes(), ctx, t.Config, bucket, streams, writers)
 	}
 
 	for _, writer := range writers {

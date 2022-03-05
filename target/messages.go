@@ -36,7 +36,7 @@ type RecordMessage struct {
 	Message
 	Stream        string          `json:"stream"`
 	Record        json.RawMessage `json:"record"`
-	TimeExtracted *time.Time      `json:"time_extracted"`
+	TimeExtracted time.Time       `json:"time_extracted"`
 }
 
 type StateMessage struct {

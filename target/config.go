@@ -20,6 +20,7 @@ import (
 	"errors"
 	"log"
 	"text/template"
+	"time"
 
 	"github.com/spf13/viper"
 )
@@ -36,7 +37,7 @@ type StreamInfo struct {
 	Minute           int
 	Hour             int
 	Day              int
-	Month            int
+	Month            time.Month
 	Year             int
 }
 

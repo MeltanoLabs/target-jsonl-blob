@@ -16,17 +16,14 @@ limitations under the License.
 package cmd
 
 import (
-	"context"
 	"fmt"
 	"io"
 	"log"
 	"os"
 
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 	"meltano.com/target-jsonl-blob/target"
 
-	"gocloud.dev/blob"
 	// _ "gocloud.dev/blob/gcsblob"
 	_ "gocloud.dev/blob/fileblob"
 	_ "gocloud.dev/blob/s3blob"
@@ -35,7 +32,7 @@ import (
 var (
 	configFile string
 	inputFile  string
-	C          target.Config
+	config     target.Config
 )
 
 var rootCmd = &cobra.Command{
@@ -52,22 +49,10 @@ func Execute() {
 		os.Exit(1)
 	}
 
-	readConfig(configFile)
-
-	if C.Bucket == "" {
-		log.Fatalf("Bucket is required")
+	if err := target.ReadConfig(configFile, &config); err != nil {
+		log.Fatalf("unable to decode into struct, %v", err)
 	}
-
-	if C.KeyTemplate == "" {
-		C.KeyTemplate = target.DEFAULT_KEY_TEMPLATE
-	}
-
-	ctx := context.Background()
-	bucket, err := blob.OpenBucket(ctx, C.Bucket)
-	if err != nil {
-		log.Fatalf("Unable to open bucket, %v", err)
-	}
-	defer bucket.Close()
+	t := target.Target{Config: config}
 
 	var lines io.Reader
 
@@ -80,38 +65,11 @@ func Execute() {
 		}
 	}
 
-	target.ProcessLines(lines, C, ctx, bucket)
-
-	if inputFile == "" {
-		target.ProcessLines(os.Stdin, C, ctx, bucket)
-	} else {
-		inputLines, err := os.Open(inputFile)
-		if err != nil {
-			fmt.Print(err)
-		}
-		target.ProcessLines(inputLines, C, ctx, bucket)
-	}
-
+	t.ProcessLines(lines)
 }
 
 func init() {
 	rootCmd.PersistentFlags().StringVarP(&configFile, "config", "c", "", "Config file")
 	rootCmd.PersistentFlags().StringVarP(&inputFile, "input", "i", "", "Input file")
 	rootCmd.MarkPersistentFlagRequired("config")
-}
-
-// initConfig reads in config file and ENV variables if set.
-func readConfig(file string) {
-	viper.SetConfigFile(file)
-
-	if err := viper.ReadInConfig(); err == nil {
-		log.Printf("Using config file %s", viper.ConfigFileUsed())
-	} else {
-		fmt.Fprintln(os.Stderr, "Config file is not valid")
-		os.Exit(1)
-	}
-
-	if err := viper.Unmarshal(&C); err != nil {
-		log.Fatalf("Unable to decode into struct, %v", err)
-	}
 }

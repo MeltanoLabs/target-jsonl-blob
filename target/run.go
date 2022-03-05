@@ -27,27 +27,33 @@ import (
 	"gocloud.dev/blob"
 )
 
+type Target struct {
+	Config Config
+}
+
 func handleNewStream(
-	streamName string,
+	message RecordMessage,
 	ctx context.Context,
 	config Config,
 	bucket *blob.Bucket,
 	streams map[string]StreamInfo,
 	writers map[string]*blob.Writer,
 ) {
-	now := time.Now()
-	streams[streamName] = StreamInfo{
-		StreamName:       streamName,
-		Date:             now.Format("2006-01-02"),
-		Minute:           now.Minute(),
-		Hour:             now.Hour(),
-		Day:              now.Day(),
-		Month:            int(now.Month()),
-		Year:             now.Year(),
-		TimestampSeconds: now.Unix(),
+	if message.TimeExtracted.IsZero() {
+		message.TimeExtracted = time.Now()
+	}
+	streams[message.Stream] = StreamInfo{
+		StreamName:       message.Stream,
+		Date:             message.TimeExtracted.Format("2006-01-02"),
+		Minute:           message.TimeExtracted.Minute(),
+		Hour:             message.TimeExtracted.Hour(),
+		Day:              message.TimeExtracted.Day(),
+		Month:            message.TimeExtracted.Month(),
+		Year:             message.TimeExtracted.Year(),
+		TimestampSeconds: message.TimeExtracted.Unix(),
 	}
 
-	objectKey, err := FillKeyTemplate(config.KeyTemplate, streams[streamName])
+	objectKey, err := FillKeyTemplate(config.KeyTemplate, streams[message.Stream])
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -56,7 +62,7 @@ func handleNewStream(
 	if err != nil {
 		log.Fatalf("Unable to write to bucket, %v", err)
 	}
-	writers[streamName] = w
+	writers[message.Stream] = w
 }
 
 func processLine(
@@ -81,7 +87,7 @@ func processLine(
 
 		_, ok := streams[recordMessage.Stream]
 		if !ok {
-			handleNewStream(recordMessage.Stream, ctx, config, bucket, streams, writers)
+			handleNewStream(recordMessage, ctx, config, bucket, streams, writers)
 		}
 
 		w := writers[recordMessage.Stream]
@@ -106,18 +112,20 @@ func processLine(
 	}
 }
 
-func ProcessLines(
-	r io.Reader,
-	config Config,
-	ctx context.Context,
-	bucket *blob.Bucket,
-) {
+func (t Target) ProcessLines(r io.Reader) {
 	scanner := bufio.NewScanner(r)
 	streams := make(map[string]StreamInfo)
 	writers := make(map[string]*blob.Writer)
 
+	ctx := context.Background()
+	bucket, err := blob.OpenBucket(ctx, t.Config.Bucket)
+	if err != nil {
+		log.Fatalf("Unable to open bucket, %v", err)
+	}
+	defer bucket.Close()
+
 	for scanner.Scan() {
-		processLine(scanner.Bytes(), ctx, config, bucket, streams, writers)
+		processLine(scanner.Bytes(), ctx, t.Config, bucket, streams, writers)
 	}
 
 	for _, writer := range writers {

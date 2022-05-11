@@ -2,6 +2,10 @@
 
 JSONL Singer target for local storage, S3 and Azure Blob Storage.
 
+## Installation
+
+To install this Singer tap, you can download a [prebuilt binary](https://github.com/MeltanoLabs/target-jsonl-blob/releases), or you can [build it from source](#build-from-source).
+
 ## Configuration
 
 | Setting | Required | Default | Description |

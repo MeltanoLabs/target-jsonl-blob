@@ -15,11 +15,12 @@ To install this Singer tap, you can download a [prebuilt binary](https://github.
 
 ### Bucket URLs
 
-| Storage | Example URL                 |
-|---------|-----------------------------|
-| local   | `file:///path/to/directory` |
-| S3      | `s3://my-bucket`            |
-| Azure   | `azblob://my-container`     |
+| Storage | Example URL                 | Supported URL parameters                                                            |
+|---------|-----------------------------|-------------------------------------------------------------------------------------|
+| local   | `file:///path/to/directory` | See [supported parameters](https://pkg.go.dev/gocloud.dev/blob/fileblob#URLOpener)  |
+| S3      | `s3://my-bucket`            | See [supported parameters](https://pkg.go.dev/gocloud.dev/blob/s3blob#URLOpener)    |
+| Azure   | `azblob://my-container`     | See [supported parameters](https://pkg.go.dev/gocloud.dev/blob/azureblob#URLOpener) |
+| GCS     | `gs://my-bucket`            | See [supported parameters](https://pkg.go.dev/gocloud.dev/blob/gcsblob#URLOpener)   |
 
 ### Available fields for `key_template`
 

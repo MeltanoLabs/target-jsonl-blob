@@ -5,7 +5,7 @@ go 1.17
 require (
 	github.com/spf13/cobra v1.5.0
 	github.com/spf13/viper v1.12.0
-	gocloud.dev v0.25.0
+	gocloud.dev v0.26.0
 )
 
 require (

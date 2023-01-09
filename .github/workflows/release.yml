@@ -26,7 +26,7 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
     - name: Release binaries
-      uses: wangyoucao577/go-release-action@v1.25
+      uses: wangyoucao577/go-release-action@v1.34
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         goos: ${{ matrix.goos }}

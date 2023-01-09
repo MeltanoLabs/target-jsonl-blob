@@ -11,3 +11,14 @@ updates:
       - "edgarrmondragon"
     labels:
       - "dependencies"
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: weekly
+      day: monday
+      time: "12:00"
+      timezone: "America/Mexico_City"
+    reviewers:
+      - "edgarrmondragon"
+    labels:
+      - "dependencies"

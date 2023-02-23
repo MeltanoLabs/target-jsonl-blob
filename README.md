@@ -43,7 +43,63 @@ go build -o target-jsonl-blob
 
 ## Usage with Meltano
 
-_TODO_
+1. [Download the appropriate asset](#1-download-the-appropriate-asset)
+1. [Allow execution of the downloaded binary](#2-allow-execution-of-the-downloaded-binary)
+1. [Add a custom Meltano plugin to your project](#3-add-a-custom-meltano-plugin-to-your-project)
+1. [Run a pipeline](#4-run-a-pipeline)
+
+### 1. Download the appropriate asset
+
+You can see the full list of assets in the release page: https://github.com/MeltanoLabs/target-jsonl-blob/releases/latest.
+
+The [`gh`](https://cli.github.com/) tool makes downloading an asset easy:
+
+```bash
+gh release download v0.0.4 \
+  -R MeltanoLabs/target-jsonl-blob \
+  -p '*darwin-amd64' \
+  --clobber \
+  -O target-jsonl-blob
+```
+
+### 2. Allow execution of the downloaded binary
+
+```bash
+chmod +x target-jsonl-blob
+```
+
+### 3. Add a custom Meltano plugin to your project
+
+```yaml
+# meltano.yml
+plugins:
+  loaders:
+  - name: target-jsonl-blob
+    namespace: target_jsonl_blob
+    executable: ./target-jsonl-blob
+    settings:
+    - name: bucket
+      label: Bucket
+      description: Target directory (local, S3, Azure Blob)
+    - name: key_template
+      label: Key Template
+      description: Template string for file keys
+    config:
+      bucket: file://./output/my-bucket
+      key_template: $MELTANO_EXTRACTOR_NAMESPACE/{{.StreamName}}.jsonl
+```
+
+You also need to ensure the local "bucket" exists:
+
+```bash
+mkdir output/my-bucket
+```
+
+### 4. Run a pipeline
+
+```bash
+meltano run tap-github target-jsonl-blob
+```
 
 ## Roadmap
 

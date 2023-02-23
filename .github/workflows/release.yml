@@ -1,6 +1,6 @@
 on:
   release:
-    types: [created]
+    types: [published]
 jobs:
   releases-matrix:
     name: Release Go Binaries
@@ -34,4 +34,4 @@ jobs:
         goversion: "1.17"
         project_path: ./
         binary_name: target-jsonl-blob
-        extra_files: ./README.md
+        compress_assets: false

@@ -1,6 +1,5 @@
 # Config files
 *.json
-*.yaml
 !*.example.*
 
 # Data files

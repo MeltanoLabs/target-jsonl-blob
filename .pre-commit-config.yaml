@@ -1,0 +1,26 @@
+ci:
+    autofix_prs: false
+    autoupdate_schedule: weekly
+    autoupdate_commit_msg: 'chore(deps): pre-commit autoupdate'
+
+repos:
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+    -   id: check-added-large-files
+    -   id: check-json
+    -   id: check-toml
+    -   id: check-yaml
+    -   id: end-of-file-fixer
+    -   id: trailing-whitespace
+
+-   repo: https://github.com/pre-commit/pre-commit
+    rev: v3.0.4
+    hooks:
+    -   id: validate_manifest
+
+-   repo: https://github.com/python-jsonschema/check-jsonschema
+    rev: 0.21.0
+    hooks:
+    -   id: check-dependabot
+    -   id: check-github-workflows

@@ -11,13 +11,63 @@ jobs:
         os: [ubuntu-latest, macos-latest, windows-latest]
     runs-on: ${{ matrix.os }}
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
-    - name: Install Go
-      uses: actions/setup-go@v3
-      with:
-        go-version: ${{ matrix.go-version }}
-        cache: true
-        cache-dependency-path: go.sum
-    - name: Test
-      run: go test ./... -cover
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Install Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: ${{ matrix.go-version }}
+          cache: true
+          cache-dependency-path: go.sum
+      - name: Test
+        run: go test ./... -cover
+
+  integration-test:
+    strategy:
+      matrix:
+        include:
+          - fs: local
+            config:
+              bucket: file://./output/my-bucket
+          - fs: s3
+            config:
+              bucket: s3://my-bucket?endpoint=http://127.0.0.1:9000&disableSSL=true&s3ForcePathStyle=true
+    runs-on: ubuntu-latest
+    steps:
+      - name: Start MinIO
+        if: ${{ matrix.fs == 's3' }}
+        run: |
+          docker run \
+            -p 9000:9000 \
+            -p 9090:9090 \
+            -v $PWD/output:/data \
+            -e "MINIO_REGION_NAME=eu-west-1" \
+            -e "MINIO_ROOT_USER=minioadmin" \
+            -e "MINIO_ROOT_PASSWORD=minioadmin" \
+            quay.io/minio/minio server /data --console-address ":9090"
+
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: 1.20.x
+          cache: true
+          cache-dependency-path: go.sum
+
+      - name: Build
+        run: |
+          go build
+          ./target-jsonl-blob --version
+
+      - name: Write config
+        run: |
+          echo '${{ toJSON(matrix.config) }}' > config.json
+
+      - name: Test
+        env:
+          AWS_ACCESS_KEY_ID: minioadmin
+          AWS_SECRET_ACCESS_KEY: minioadmin
+        run: |
+          ./target-jsonl-blob --config config.json --input data.jsonl

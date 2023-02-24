@@ -43,10 +43,20 @@ var rootCmd = &cobra.Command{
 
 // Execute adds all child commands to the root command and sets flags appropriately.
 // This is called by main.main(). It only needs to happen once to the rootCmd.
-func Execute() {
+func Execute(version string) {
+	rootCmd.Version = version
+
 	err := rootCmd.Execute()
 	if err != nil {
 		os.Exit(1)
+	}
+
+	if printVersion, _ := rootCmd.Flags().GetBool("version"); printVersion {
+		os.Exit(0)
+	}
+
+	if printHelp, _ := rootCmd.Flags().GetBool("help"); printHelp {
+		os.Exit(0)
 	}
 
 	if err := target.ReadConfig(configFile, &config); err != nil {
@@ -70,6 +80,9 @@ func Execute() {
 
 func init() {
 	rootCmd.PersistentFlags().StringVarP(&configFile, "config", "c", "", "Config file")
-	rootCmd.PersistentFlags().StringVarP(&inputFile, "input", "i", "", "Input file")
+	rootCmd.MarkPersistentFlagFilename("config", "json")
 	rootCmd.MarkPersistentFlagRequired("config")
+
+	rootCmd.PersistentFlags().StringVarP(&inputFile, "input", "i", "", "Input file")
+	rootCmd.MarkPersistentFlagFilename("input")
 }

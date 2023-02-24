@@ -23,6 +23,7 @@ jobs:
         run: go test ./... -cover
 
   integration-test:
+    name: ${{ matrix.fs }}
     strategy:
       matrix:
         include:

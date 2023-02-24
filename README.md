@@ -44,7 +44,6 @@ go build -o target-jsonl-blob
 ## Usage with Meltano
 
 1. [Download the appropriate asset](#1-download-the-appropriate-asset)
-1. [Allow execution of the downloaded binary](#2-allow-execution-of-the-downloaded-binary)
 1. [Add a custom Meltano plugin to your project](#3-add-a-custom-meltano-plugin-to-your-project)
 1. [Run a pipeline](#4-run-a-pipeline)
 
@@ -55,20 +54,22 @@ You can see the full list of assets in the release page: https://github.com/Melt
 The [`gh`](https://cli.github.com/) tool makes downloading an asset easy:
 
 ```bash
-gh release download v0.0.4 \
+gh release download v0.0.6 \
   -R MeltanoLabs/target-jsonl-blob \
-  -p '*darwin-amd64' \
-  --clobber \
-  -O target-jsonl-blob
+  -p '*darwin_amd64*' \
+  --clobber
+
+tar -xvf target-jsonl-blob_0.0.6_darwin_amd64.tar.gz target-jsonl-blob
 ```
 
-### 2. Allow execution of the downloaded binary
+You can also install with Homebrew:
 
 ```bash
-chmod +x target-jsonl-blob
+brew tap MeltanoLabs/target-jsonl-blob https://github.com/MeltanoLabs/target-jsonl-blob
+brew install target-jsonl-blob
 ```
 
-### 3. Add a custom Meltano plugin to your project
+### 2. Add a custom Meltano plugin to your project
 
 ```yaml
 # meltano.yml
@@ -95,7 +96,7 @@ You also need to ensure the local "bucket" exists:
 mkdir output/my-bucket
 ```
 
-### 4. Run a pipeline
+### 3. Run a pipeline
 
 ```bash
 meltano run tap-github target-jsonl-blob

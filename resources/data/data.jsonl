@@ -1,0 +1,13 @@
+{"type": "BAD"}
+{"type": "SCHEMA", "stream": "test", "schema": {"properties": {"id": "integer"}}}
+{"type": "RECORD", "stream": "test", "record": {"id": 1}, "time_extracted": "2022-01-01T00:00:00Z"}
+{"type": "RECORD", "stream": "test", "record": {"id": 2}, "time_extracted": "2022-01-01T00:00:00Z"}
+{"type": "STATE", "value": {"bookmark": "2022-01-01"}}
+{"type": "SCHEMA", "stream": "test2", "schema": {"properties": {"name": "string"}}}
+{"type": "RECORD", "stream": "test2", "record": {"name": "A"}}
+{"type": "RECORD", "stream": "test2", "record": {"name": "B"}}
+{"type": "STATE", "value": {"test": "2022-01-01", "test2": "2022-02-01"}}
+{"type": "SCHEMA", "stream": "test", "schema": {"properties": {"id": "integer"}}}
+{"type": "RECORD", "stream": "test", "record": {"id": 3}}
+{"type": "RECORD", "stream": "test", "record": {"id": 4}}
+{"type": "STATE", "value": {"test": "2022-03-01", "test2": "2022-02-01"}}

@@ -43,16 +43,16 @@ jobs:
     steps:
       - name: Start MinIO
         if: ${{ matrix.fs == 's3' }}
-        run: |
-          docker run -d \
-            --name minio
-            -p 9000:9000 \
-            -p 9090:9090 \
-            -v $PWD/output:/data \
-            -e "MINIO_REGION_NAME=eu-west-1" \
-            -e "MINIO_ROOT_USER=minioadmin" \
-            -e "MINIO_ROOT_PASSWORD=minioadmin" \
-            quay.io/minio/minio server /data --console-address ":9090"
+        run: >
+          docker run -d
+          --name minio
+          -p 9000:9000
+          -p 9090:9090
+          -v $PWD/output:/data
+          -e "MINIO_REGION_NAME=eu-west-1"
+          -e "MINIO_ROOT_USER=minioadmin"
+          -e "MINIO_ROOT_PASSWORD=minioadmin"
+          quay.io/minio/minio server /data --console-address ":9090"
 
       - name: Checkout code
         uses: actions/checkout@v3

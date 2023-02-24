@@ -1,6 +1,4 @@
-on:
-  release:
-    types: [published]
+on: {}
 jobs:
   releases-matrix:
     name: Release Go Binaries

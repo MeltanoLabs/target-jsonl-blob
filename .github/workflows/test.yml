@@ -41,6 +41,9 @@ jobs:
               bucket: s3://my-bucket?endpoint=http://127.0.0.1:9000&disableSSL=true&s3ForcePathStyle=true
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
       - name: Start MinIO
         if: ${{ matrix.fs == 's3' }}
         run: >
@@ -53,9 +56,6 @@ jobs:
           -e "MINIO_ROOT_USER=minioadmin"
           -e "MINIO_ROOT_PASSWORD=minioadmin"
           quay.io/minio/minio server /data --console-address ":9090"
-
-      - name: Checkout code
-        uses: actions/checkout@v3
 
       - name: Install Go
         uses: actions/setup-go@v3

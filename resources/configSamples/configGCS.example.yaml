@@ -1,0 +1,2 @@
+bucket: gs://my-bucket
+key_template: "{{.StreamName}}/{{.Year}}/{{.Month}}/{{.Day}}/{{.Hour}}/{{.Minute}}/{{.StreamName}}.jsonl"

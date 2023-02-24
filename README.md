@@ -101,13 +101,3 @@ mkdir output/my-bucket
 ```bash
 meltano run tap-github target-jsonl-blob
 ```
-
-## Roadmap
-
-- Support GCS
-
-  Currently blocked by
-
-  ```
-  cloud.google.com/go/storage@v1.16.1/storage.go:1416:53: o.GetCustomerEncryption().GetKeySha256 undefined (type *"google.golang.org/genproto/googleapis/storage/v2".Object_CustomerEncryption has no field or method GetKeySha256)
-  ```

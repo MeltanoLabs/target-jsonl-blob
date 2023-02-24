@@ -23,7 +23,7 @@ jobs:
         run: go test ./... -cover
 
   integration-test:
-    name: ${{ matrix.fs }}
+    name: Integration test - ${{ matrix.fs }}
     strategy:
       matrix:
         include:
@@ -71,4 +71,4 @@ jobs:
           AWS_ACCESS_KEY_ID: minioadmin
           AWS_SECRET_ACCESS_KEY: minioadmin
         run: |
-          ./target-jsonl-blob --config config.json --input data.jsonl
+          ./target-jsonl-blob --config config.json --input resources/data/data.jsonl

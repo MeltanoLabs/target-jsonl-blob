@@ -1,8 +1,10 @@
 name: goreleaser
 
 on:
-  release:
-    types: [published]
+  push:
+    # run only against tags
+    tags:
+      - '*'
 
 permissions:
   contents: write
@@ -15,6 +17,8 @@ jobs:
       uses: actions/checkout@v3
       with:
         fetch-depth: 0
+
+    - run: git fetch --force --tags
 
     - name: Set up Go
       uses: actions/setup-go@v3
@@ -29,4 +33,3 @@ jobs:
         args: release --clean --release-notes=${{ github.event.release.body }} --skip-validate --debug
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        GORELEASER_CURRENT_TAG: ${{ github.ref }}

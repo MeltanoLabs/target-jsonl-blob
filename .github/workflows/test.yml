@@ -1,8 +1,14 @@
 name: Test
+
 on:
   pull_request: {}
   push:
     branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
 jobs:
   test:
     strategy:
@@ -38,7 +44,8 @@ jobs:
       - name: Start MinIO
         if: ${{ matrix.fs == 's3' }}
         run: |
-          docker run \
+          docker run -d \
+            --name minio
             -p 9000:9000 \
             -p 9090:9090 \
             -v $PWD/output:/data \

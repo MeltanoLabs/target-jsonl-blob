@@ -17,6 +17,9 @@ package main
 
 import "meltano.com/target-jsonl-blob/cmd"
 
+// goreleaser injected values
+var version = "dev"
+
 func main() {
-	cmd.Execute()
+	cmd.Execute(version)
 }

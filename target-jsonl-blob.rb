@@ -5,21 +5,21 @@
 class TargetJsonlBlob < Formula
   desc "JSONL Singer target for local storage, S3 and Azure Blob Storage."
   homepage "https://github.com/MeltanoLabs/target-jsonl-blob"
-  version "0.0.8"
+  version "0.0.9"
   license "Apache-2.0"
 
   on_macos do
     if Hardware::CPU.arm?
-      url "https://github.com/MeltanoLabs/target-jsonl-blob/releases/download/v0.0.8/target-jsonl-blob_0.0.8_darwin_arm64.tar.gz"
-      sha256 "4dc28d88a041e157c61a8d9eebed28d6be13b64ff225e2ace5f5300ffa74cdbd"
+      url "https://github.com/MeltanoLabs/target-jsonl-blob/releases/download/v0.0.9/target-jsonl-blob_0.0.9_darwin_arm64.tar.gz"
+      sha256 "70fda7afc1c87734e39c24c83287e27b584d4b06b5edfe787296aeedb585672a"
 
       def install
         bin.install "target-jsonl-blob"
       end
     end
     if Hardware::CPU.intel?
-      url "https://github.com/MeltanoLabs/target-jsonl-blob/releases/download/v0.0.8/target-jsonl-blob_0.0.8_darwin_amd64.tar.gz"
-      sha256 "cdc182ddab5674504741f3087b9a9866fed50facee2f388a2d1ae9004b355631"
+      url "https://github.com/MeltanoLabs/target-jsonl-blob/releases/download/v0.0.9/target-jsonl-blob_0.0.9_darwin_amd64.tar.gz"
+      sha256 "9e459c5f2a3f54a1daeea6bc06d3db94c2249661f2a3d1904554726b4db319cb"
 
       def install
         bin.install "target-jsonl-blob"
@@ -29,16 +29,16 @@ class TargetJsonlBlob < Formula
 
   on_linux do
     if Hardware::CPU.arm? && Hardware::CPU.is_64_bit?
-      url "https://github.com/MeltanoLabs/target-jsonl-blob/releases/download/v0.0.8/target-jsonl-blob_0.0.8_linux_arm64.tar.gz"
-      sha256 "5347d0aeecb43c174b5948499b2a64080d6ae4ea7756fe0b3a0e6f6072cc4503"
+      url "https://github.com/MeltanoLabs/target-jsonl-blob/releases/download/v0.0.9/target-jsonl-blob_0.0.9_linux_arm64.tar.gz"
+      sha256 "703858560c280341674ea4b6398974897a6ae9d74fb2e586eebcaef5032b9176"
 
       def install
         bin.install "target-jsonl-blob"
       end
     end
     if Hardware::CPU.intel?
-      url "https://github.com/MeltanoLabs/target-jsonl-blob/releases/download/v0.0.8/target-jsonl-blob_0.0.8_linux_amd64.tar.gz"
-      sha256 "df729b5a90c36dd42b1fe30396d77a38fdc966ff206203a64e6faa39cffc8a80"
+      url "https://github.com/MeltanoLabs/target-jsonl-blob/releases/download/v0.0.9/target-jsonl-blob_0.0.9_linux_amd64.tar.gz"
+      sha256 "9f56029a32ec1acce51abcb2b0a048d9980b31749a5c683b77c0574dd279d3a0"
 
       def install
         bin.install "target-jsonl-blob"

@@ -52,7 +52,7 @@ func ReadConfig(file string, c *Config) error {
 		return err
 	}
 
-	if err := viper.Unmarshal(&c); err != nil {
+	if err := viper.Unmarshal(c); err != nil {
 		return err
 	}
 

@@ -3,7 +3,7 @@ module meltano.com/target-jsonl-blob
 go 1.19
 
 require (
-	github.com/spf13/cobra v1.8.0
+	github.com/spf13/cobra v1.8.1
 	github.com/spf13/viper v1.19.0
 	gocloud.dev v0.37.0
 )

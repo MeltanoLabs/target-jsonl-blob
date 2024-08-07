@@ -29,7 +29,7 @@ release:
   prerelease: auto
 
 brews:
-- tap:
+- repository:
     owner: MeltanoLabs
     name: target-jsonl-blob
   homepage: https://github.com/MeltanoLabs/target-jsonl-blob
@@ -45,7 +45,7 @@ snapshot:
   name_template: "{{ .Tag }}-next"
 
 changelog:
-  skip: false
+  disable: false
 
 # The lines beneath this are called `modelines`. See `:help modeline`
 # Feel free to remove those if you don't want/use them.

@@ -24,6 +24,7 @@ import (
 	"github.com/spf13/cobra"
 	"meltano.com/target-jsonl-blob/target"
 
+	_ "gocloud.dev/blob/azureblob"
 	_ "gocloud.dev/blob/fileblob"
 	_ "gocloud.dev/blob/gcsblob"
 	_ "gocloud.dev/blob/s3blob"

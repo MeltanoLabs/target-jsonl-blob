@@ -1,6 +1,8 @@
 module meltano.com/target-jsonl-blob
 
-go 1.19
+go 1.21
+
+toolchain go1.21.13
 
 require (
 	github.com/spf13/cobra v1.8.1

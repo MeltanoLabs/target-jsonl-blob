@@ -46,7 +46,7 @@ jobs:
               bucket: file://./output/my-bucket
           - fs: s3
             config:
-              bucket: s3://my-bucket?endpoint=http://127.0.0.1:9000&disableSSL=true&s3ForcePathStyle=true&region=us-west-1
+              bucket: s3://my-bucket?endpoint=http://127.0.0.1:9000&disable_ssl=true&s3_force_path_style=true&region=us-west-1
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code

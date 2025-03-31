@@ -2,11 +2,11 @@ module meltano.com/target-jsonl-blob
 
 go 1.21.0
 
-toolchain go1.24.0
+toolchain go1.24.1
 
 require (
 	github.com/spf13/cobra v1.9.1
-	github.com/spf13/viper v1.20.0
+	github.com/spf13/viper v1.20.1
 	gocloud.dev v0.40.0
 )
 

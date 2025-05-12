@@ -7,8 +7,6 @@ updates:
       day: monday
       time: "12:00"
       timezone: "America/Mexico_City"
-    reviewers:
-      - "edgarrmondragon"
     labels:
       - "dependencies"
   - package-ecosystem: github-actions
@@ -18,7 +16,5 @@ updates:
       day: monday
       time: "12:00"
       timezone: "America/Mexico_City"
-    reviewers:
-      - "edgarrmondragon"
     labels:
       - "dependencies"
